@@ -1,0 +1,19 @@
+{
+  "name": "kacper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node src/test.js",
+    "train": "node src/train.js",
+    "start": "node src/train.js; node src/test.js; venv/bin/python charts.py",
+    "charts": "venv/bin/python charts.py"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "sharp": "^0.34.2"
+  }
+}

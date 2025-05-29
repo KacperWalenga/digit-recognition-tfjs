@@ -1,0 +1,32 @@
+[
+  {
+    "index": 0,
+    "name": "dense_Dense1",
+    "className": "Dense",
+    "outputShape": [
+      null,
+      1024
+    ],
+    "paramCount": 803840
+  },
+  {
+    "index": 1,
+    "name": "dense_Dense2",
+    "className": "Dense",
+    "outputShape": [
+      null,
+      512
+    ],
+    "paramCount": 524800
+  },
+  {
+    "index": 2,
+    "name": "dense_Dense3",
+    "className": "Dense",
+    "outputShape": [
+      null,
+      10
+    ],
+    "paramCount": 5130
+  }
+]
