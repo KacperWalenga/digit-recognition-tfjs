@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import * as tf from '@tensorflow/tfjs-node';
 
 
-export async function loadImage(imagePath, size = [28, 28]) {
+export async function loadImage(imagePath: string, size = [28, 28]) {
     const imageBuffer = await sharp(imagePath)
         .resize(size[0], size[1])
         .greyscale()

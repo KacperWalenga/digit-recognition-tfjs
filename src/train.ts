@@ -2,15 +2,17 @@ import * as tf from '@tensorflow/tfjs-node';
 import fs from 'fs';
 import { loadImage } from './utils.js'
 import { createModel, saveModel } from './model.js';
+import { TensorLike2D } from '@tensorflow/tfjs-core/dist/types.js';
 
 
-function encodeLabel(label, numClasses = 10) {
-    const labelArray = new Array(numClasses).fill(0);
+function encodeLabel(label: number, numClasses = 10) {
+    const labelArray = new Array<number>(numClasses).fill(0);
     labelArray[label] = 1;
+
     return labelArray;
 }
 
-async function trainModel(model, trainData, trainLabels, epochs = 10, batchSize = 32) {
+async function trainModel(model: tf.Sequential, trainData: TensorLike2D, trainLabels: TensorLike2D, epochs = 10, batchSize = 32) {
     const xs = tf.tensor2d(trainData);
     const ys = tf.tensor2d(trainLabels);
 
@@ -25,8 +27,8 @@ async function trainModel(model, trainData, trainLabels, epochs = 10, batchSize 
 }
 
 async function main() {
-    const trainData = [];
-    const trainLabels = [];
+    const trainData: number[] = [];
+    const trainLabels: number[][] = [];
 
     const imagesDir = './images';
 
@@ -40,7 +42,7 @@ async function main() {
             if (fs.lstatSync(imagePath).isFile()) {
                 const imageTensor = await loadImage(imagePath);
 
-                trainData.push(imageTensor.arraySync());
+                trainData.push(imageTensor.arraySync() as number);
                 trainLabels.push(encodeLabel(label));
             }
         }

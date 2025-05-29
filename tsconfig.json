@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "esModuleInterop": true,
+        "outDir": "out",
+        "lib": ["ES6", "DOM"]
+    },
+    "exclude": [
+        "venv",
+        "node_modules"
+    ]
+}

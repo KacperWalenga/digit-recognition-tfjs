@@ -1,8 +1,12 @@
 import * as tf from '@tensorflow/tfjs-node';
 import fs from 'fs';
 
+export type MetaData = {
+    epochs: number
+    timestamp: string
+}
 
-export function createModel(inputSize, numClasses) {
+export function createModel(inputSize: number, numClasses: number) {
     const model = tf.sequential();
 
     model.add(
@@ -12,6 +16,7 @@ export function createModel(inputSize, numClasses) {
             inputShape: [inputSize],
         })
     );
+
     model.add(
         tf.layers.dense({
             units: 64,
@@ -35,11 +40,11 @@ export function createModel(inputSize, numClasses) {
     return model;
 }
 
-export async function saveModel(model, epochs) {
+export async function saveModel(model: tf.Sequential, epochs: number) {
     const savePath = 'file://./models/model';
 
     await model.save(savePath);
-    const metadata = {
+    const metadata: MetaData = {
         epochs: epochs,
         timestamp: new Date().toISOString(),
     };
@@ -56,16 +61,17 @@ export function loadModel() {
 
 export function getCustomData() {
     const metadataRaw = fs.readFileSync(`./models/model/metadata.json`, 'utf-8');
-    const metadata = JSON.parse(metadataRaw);
+    const metadata = JSON.parse(metadataRaw) as MetaData;
+
     return metadata;
 }
 
-export function getLayerDetails(model) {
+export function getLayerDetails(model: tf.LayersModel) {
     return model.layers.map((layer, index) => ({
         index,
         name: layer.name,
         className: layer.getClassName(),
-        inputShape: layer.inputShape,
+        inputSpec: layer.inputSpec,
         outputShape: layer.outputShape,
         paramCount: layer.countParams(),
     }));

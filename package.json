@@ -3,17 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "test": "node src/test.js",
-    "train": "node src/train.js",
-    "start": "node src/train.js; node src/test.js; venv/bin/python charts.py",
+    "compile": "rm -rf ./out; tsc",
+    "test": "node out/test.js",
+    "testMnist": "node out/testMnist.js",
+    "train": "node out/train.js",
+    "trainMnist": "node out/trainMnist.js",
+    "start": "node out/train.js; node out/test.js; venv/bin/python charts.py",
+    "startMnist": "node out/trainMnist.js; node out/testMnist.js; venv/bin/python charts.py",
     "charts": "venv/bin/python charts.py"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs-data": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
-    "sharp": "^0.34.2"
+    "express": "^5.1.0",
+    "mnist": "^1.1.0",
+    "sharp": "^0.34.2",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.24"
   }
 }
