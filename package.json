@@ -6,11 +6,12 @@
   "scripts": {
     "compile": "rm -rf ./out; tsc",
     "start": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/test.js; venv/bin/python charts.py",
-    "train": "node out/train.js",
-    "test": "node out/test.js",
-    "testMnist": "node out/testMnist.js",
+    "train": "node out/train.js; npm run trainingCharts",
+    "test": "node out/test.js; npm run charts",
+    "testMnist": "node out/testMnist.js; npm run charts",
     "startMnist": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/testMnist.js; venv/bin/python charts.py",
-    "charts": "venv/bin/python charts.py"
+    "charts": "venv/bin/python charts.py",
+    "trainingCharts": "venv/bin/python training_charts.py"
   },
   "author": "",
   "license": "ISC",
