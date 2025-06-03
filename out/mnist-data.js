@@ -40,7 +40,6 @@ exports.MnistLoader = void 0;
 const tf = __importStar(require("@tensorflow/tfjs-node"));
 const mnist_1 = __importDefault(require("mnist"));
 class MnistLoader {
-    //constructor(private trainSize = 60000, private testSize = 10000) {}
     constructor(trainSize = 60000, testSize = 10000) {
         this.trainSize = trainSize;
         this.testSize = testSize;

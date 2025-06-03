@@ -7,7 +7,6 @@ export class MnistLoader {
   testImages!: tf.Tensor4D;
   testLabels!: tf.Tensor2D;
 
-  //constructor(private trainSize = 60000, private testSize = 10000) {}
   constructor(private trainSize = 60000, private testSize = 10000) {}
 
   loadData() {

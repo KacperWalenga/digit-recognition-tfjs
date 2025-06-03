@@ -4,13 +4,11 @@ import numpy as np
 import os
 
 def plot_training_history():
-    # Sprawdź, czy plik istnieje
     if not os.path.exists('./models/model/training_history.json'):
         print("Plik z historią treningu nie istnieje!")
         return
 
     history = None    
-    # Wczytaj historię treningu
     with open('./models/model/training_history.json', 'r') as f:
         history = json.load(f) 
     

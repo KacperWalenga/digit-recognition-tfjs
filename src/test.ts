@@ -58,21 +58,6 @@ function loadDataset(folderPath: string) {
     );
 }
 
-async function predictNumber(testImageTensor: tf.Tensor, testImagePath: string, model: tf.LayersModel) {
-    const prediction = model.predict(testImageTensor) as tf.Tensor;
-    const predictions = prediction.arraySync()[0];
-    const predictedClass = predictions.indexOf(Math.max(...predictions));
-    const probability = predictions[predictedClass] * 100;
-
-    console.log(
-        `Obraz: ${testImagePath} - Przewidywana liczba: ${predictedClass} - Prawdopodobieństwo: ${probability.toFixed(2)}%`
-    );
-
-    testImageTensor.dispose();
-
-    return `${testImagePath.replace('.png', '')},${predictedClass},${probability.toFixed(2)}`
-}
-
 function getCurrentDate() {
     const date = new Date()
     const currentDate = `${date.getFullYear()}_${formatDate(date.getMonth() + 1)}_${formatDate(date.getDate())}`

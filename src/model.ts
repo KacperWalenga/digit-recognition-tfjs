@@ -26,7 +26,7 @@ export function createModel(): tf.LayersModel {
     }));
 
     model.add(tf.layers.maxPooling2d({ poolSize: [2, 2] }));
-    //model.add(tf.layers.batchNormalization());
+    
     model.add(tf.layers.dropout({ rate: 0.5 }));
 
     model.add(tf.layers.flatten());
