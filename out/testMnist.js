@@ -49,7 +49,7 @@ const tf = __importStar(require("@tensorflow/tfjs-node"));
 const fs_1 = __importDefault(require("fs"));
 const model_js_1 = require("./model.js");
 const mnist_1 = __importDefault(require("mnist"));
-const set = mnist_1.default.set(60000, 10000);
+const set = mnist_1.default.set(6000, 1000);
 const TEST_SET = set.test;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -59,39 +59,53 @@ function main() {
         yield runTest(model, currentDate, customData);
     });
 }
-function runTest(model, currentDate, customData) {
-    return __awaiter(this, void 0, void 0, function* () {
+function runTest(model_1, currentDate_1, customData_1) {
+    return __awaiter(this, arguments, void 0, function* (model, currentDate, customData, batchSize = 32) {
         const csvRows = [];
         csvRows.push("image,predicted_class,probability");
         let correct = 0;
-        for (let i = 0; i < TEST_SET.length; i++) {
-            const sample = TEST_SET[i];
-            const inputTensor = tf.tensor2d(sample.input, [1, 784]);
-            const trueClass = sample.output.indexOf(1);
-            const prediction = model.predict(inputTensor);
-            const predictions = prediction.arraySync()[0];
-            const predictedClass = predictions.indexOf(Math.max(...predictions));
-            const probability = predictions[predictedClass] * 100;
-            if (predictedClass === trueClass)
-                correct++;
-            csvRows.push(`${trueClass}_${i},${predictedClass},${probability.toFixed(2)}`);
-            console.log(`Przewidywana liczba: ${trueClass}, Próbka: ${i}, Przewidziana liczba: ${predictedClass}, Prawdopodobieństwo: ${probability.toFixed(2)}`);
+        const total = TEST_SET.length;
+        for (let start = 0; start < total; start += batchSize) {
+            const end = Math.min(start + batchSize, total);
+            const batchSamples = TEST_SET.slice(start, end);
+            const batchInputs = batchSamples.map(s => s.input);
+            const reshapedInputs = batchInputs.map(flat => {
+                const image = tf.tensor2d(flat, [28, 28]);
+                return image.expandDims(-1);
+            });
+            const inputTensor = tf.stack(reshapedInputs);
+            const predictionRaw = model.predict(inputTensor);
+            const predictionTensor = Array.isArray(predictionRaw) ? predictionRaw[0] : predictionRaw;
+            const predictions = predictionTensor.arraySync();
+            for (let i = 0; i < batchSamples.length; i++) {
+                const trueClass = batchSamples[i].output.indexOf(1);
+                const preds = predictions[i];
+                const predictedClass = preds.indexOf(Math.max(...preds));
+                const probability = preds[predictedClass] * 100;
+                if (predictedClass === trueClass)
+                    correct++;
+                const sampleIndex = start + i;
+                csvRows.push(`${trueClass}_${sampleIndex},${predictedClass},${probability.toFixed(2)}`);
+                console.log(`Przewidywana liczba: ${trueClass}, Próbka: ${sampleIndex}, Przewidziana liczba: ${predictedClass}, Prawdopodobieństwo: ${probability.toFixed(2)}`);
+            }
             inputTensor.dispose();
-            prediction.dispose();
+            predictionTensor.dispose();
         }
         const layerDetails = (0, model_js_1.getLayerDetails)(model);
-        fs_1.default.mkdirSync(`./results/${currentDate}_mnist`, { recursive: true });
-        fs_1.default.writeFileSync(`./results/${currentDate}_mnist/predictions.csv`, csvRows.join('\n'));
-        fs_1.default.writeFileSync(`./results/${currentDate}_mnist/model.json`, JSON.stringify(layerDetails, null, 2));
-        fs_1.default.writeFileSync(`./results/${currentDate}_mnist/trainingData.json`, JSON.stringify(customData, null, 2));
-        console.log(`Dokładność: ${(correct / TEST_SET.length * 100).toFixed(2)}%`);
+        const outputDir = `./results/${currentDate}_mnist`;
+        fs_1.default.mkdirSync(outputDir, { recursive: true });
+        fs_1.default.writeFileSync(`${outputDir}/predictions.csv`, csvRows.join('\n'));
+        fs_1.default.writeFileSync(`${outputDir}/model.json`, JSON.stringify(layerDetails, null, 2));
+        fs_1.default.writeFileSync(`${outputDir}/trainingData.json`, JSON.stringify(customData, null, 2));
+        fs_1.default.copyFileSync('./models/model/training_history.png', `${outputDir}/training_history.png`);
+        console.log(`Dokładność: ${(correct / total * 100).toFixed(2)}%`);
         console.log('Wyniki zapisane do pliku predictions.csv');
     });
 }
 function getCurrentDate() {
     const date = new Date();
     const currentDate = `${date.getFullYear()}_${formatDate(date.getMonth() + 1)}_${formatDate(date.getDate())}`;
-    const currentTime = `${formatDate(date.getHours())}-${formatDate(date.getMinutes())}-${formatDate(date.getSeconds())}`;
+    const currentTime = `${formatDate(date.getHours())}:${formatDate(date.getMinutes())}:${formatDate(date.getSeconds())}`;
     return `${currentDate}-${currentTime}`;
 }
 function formatDate(time) {

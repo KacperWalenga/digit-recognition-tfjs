@@ -1,0 +1,169 @@
+[
+  {
+    "index": 0,
+    "name": "conv2d_Conv2D1",
+    "className": "Conv2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 1
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      28,
+      28,
+      48
+    ],
+    "paramCount": 1248
+  },
+  {
+    "index": 1,
+    "name": "batch_normalization_BatchNormalization1",
+    "className": "BatchNormalization",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 48
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      28,
+      28,
+      48
+    ],
+    "paramCount": 192
+  },
+  {
+    "index": 2,
+    "name": "max_pooling2d_MaxPooling2D1",
+    "className": "MaxPooling2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {}
+      }
+    ],
+    "outputShape": [
+      null,
+      14,
+      14,
+      48
+    ],
+    "paramCount": 0
+  },
+  {
+    "index": 3,
+    "name": "conv2d_Conv2D2",
+    "className": "Conv2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 48
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      14,
+      14,
+      96
+    ],
+    "paramCount": 18528
+  },
+  {
+    "index": 4,
+    "name": "batch_normalization_BatchNormalization2",
+    "className": "BatchNormalization",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 96
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      14,
+      14,
+      96
+    ],
+    "paramCount": 384
+  },
+  {
+    "index": 5,
+    "name": "flatten_Flatten1",
+    "className": "Flatten",
+    "inputSpec": [
+      {
+        "minNDim": 3
+      }
+    ],
+    "outputShape": [
+      null,
+      18816
+    ],
+    "paramCount": 0
+  },
+  {
+    "index": 6,
+    "name": "dense_Dense1",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 18816
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      128
+    ],
+    "paramCount": 2408576
+  },
+  {
+    "index": 7,
+    "name": "dense_Dense2",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 128
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      64
+    ],
+    "paramCount": 8256
+  },
+  {
+    "index": 8,
+    "name": "dense_Dense3",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 64
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      10
+    ],
+    "paramCount": 650
+  }
+]

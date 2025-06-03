@@ -46,52 +46,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const tf = __importStar(require("@tensorflow/tfjs-node"));
-const fs_1 = __importDefault(require("fs"));
-const utils_js_1 = require("./utils.js");
 const model_js_1 = require("./model.js");
-function encodeLabel(label, numClasses = 10) {
-    const labelArray = new Array(numClasses).fill(0);
-    labelArray[label] = 1;
-    return labelArray;
-}
-function trainModel(model_1, trainData_1, trainLabels_1) {
-    return __awaiter(this, arguments, void 0, function* (model, trainData, trainLabels, epochs = 10, batchSize = 32) {
-        const xs = tf.tensor2d(trainData);
-        const ys = tf.tensor2d(trainLabels);
-        yield model.fit(xs, ys, {
+const mnist_data_js_1 = require("./mnist-data.js");
+const promises_1 = __importDefault(require("fs/promises"));
+function trainModel(model_1, trainXs_1, trainYs_1) {
+    return __awaiter(this, arguments, void 0, function* (model, trainXs, trainYs, epochs = 10, batchSize = 32) {
+        const result = yield model.fit(trainXs, trainYs, {
             epochs: epochs,
             batchSize: batchSize,
-            callbacks: tf.callbacks.earlyStopping({ monitor: 'acc', patience: 3 }),
+            shuffle: true,
+            callbacks: tf.callbacks.earlyStopping({
+                monitor: 'val_acc',
+                patience: 3,
+            }),
+            validationSplit: 0.1,
         });
-        xs.dispose();
-        ys.dispose();
+        const acc = result.history['acc'];
+        const val_acc = result.history['val_acc'];
+        yield promises_1.default.writeFile('./models/model/training_history.json', JSON.stringify({
+            acc: acc,
+            val_acc: val_acc,
+        }, null, 2));
+        trainXs.dispose();
+        trainYs.dispose();
     });
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const trainData = [];
-        const trainLabels = [];
-        const imagesDir = './images';
-        for (let label = 0; label <= 9; label++) {
-            const folderPath = `${imagesDir}/${label}`;
-            const files = fs_1.default.readdirSync(folderPath);
-            for (const file of files) {
-                const imagePath = `${folderPath}/${file}`;
-                if (fs_1.default.lstatSync(imagePath).isFile()) {
-                    const imageTensor = yield (0, utils_js_1.loadImage)(imagePath);
-                    trainData.push(imageTensor.arraySync());
-                    trainLabels.push(encodeLabel(label));
-                }
-            }
-        }
-        const inputSize = 28 * 28;
-        const numClasses = 10;
-        const model = (0, model_js_1.createModel)(inputSize, numClasses);
-        const epochs = 50;
-        console.log('Rozpoczynam trenowanie modelu...');
-        yield trainModel(model, trainData, trainLabels, epochs, 16);
-        console.log('Trenowanie zakończone!');
-        yield (0, model_js_1.saveModel)(model, epochs);
+        const mnistLoader = new mnist_data_js_1.MnistLoader();
+        mnistLoader.loadData();
+        const model = (0, model_js_1.createModel)();
+        yield trainModel(model, mnistLoader.trainImages, mnistLoader.trainLabels, 10, 512);
+        yield (0, model_js_1.saveModel)(model, 10);
+        console.log('Model zapisany');
     });
 }
 main();

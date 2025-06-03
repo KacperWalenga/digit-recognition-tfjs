@@ -1,67 +1,45 @@
 import * as tf from '@tensorflow/tfjs-node';
-import fs from 'fs';
-import { loadImage } from './utils.js'
 import { createModel, saveModel } from './model.js';
-import { TensorLike2D } from '@tensorflow/tfjs-core/dist/types.js';
+import { MnistLoader } from './mnist-data.js';
+import fs from 'fs/promises';
 
+async function trainModel(model: tf.LayersModel, trainXs: tf.Tensor4D, trainYs: tf.Tensor2D, epochs = 10, batchSize = 32) {
 
-function encodeLabel(label: number, numClasses = 10) {
-    const labelArray = new Array<number>(numClasses).fill(0);
-    labelArray[label] = 1;
-
-    return labelArray;
-}
-
-async function trainModel(model: tf.Sequential, trainData: TensorLike2D, trainLabels: TensorLike2D, epochs = 10, batchSize = 32) {
-    const xs = tf.tensor2d(trainData);
-    const ys = tf.tensor2d(trainLabels);
-
-    await model.fit(xs, ys, {
+    const result = await model.fit(trainXs, trainYs, {
         epochs: epochs,
         batchSize: batchSize,
-        callbacks: tf.callbacks.earlyStopping({ monitor: 'acc', patience: 3 }),
+        shuffle: true,
+        callbacks: tf.callbacks.earlyStopping({
+            monitor: 'val_acc',
+            patience: 3,
+        }),
+        validationSplit: 0.1,
     });
+    const acc = result.history['acc']
+    const val_acc = result.history['val_acc']
 
-    xs.dispose();
-    ys.dispose();
+    await fs.writeFile(
+        './models/model/training_history.json',
+        JSON.stringify({
+            acc: acc,
+            val_acc: val_acc,
+        }, null, 2)
+    );
+
+    trainXs.dispose();
+    trainYs.dispose();
 }
 
+
 async function main() {
-    const trainData: number[] = [];
-    const trainLabels: number[][] = [];
+    const mnistLoader = new MnistLoader();
+    mnistLoader.loadData();
 
-    const imagesDir = './images';
+    const model = createModel();
+    await trainModel(model, mnistLoader.trainImages, mnistLoader.trainLabels, 10, 512);
 
-    for (let label = 0; label <= 9; label++) {
-        const folderPath = `${imagesDir}/${label}`;
-        const files = fs.readdirSync(folderPath);
-
-        for (const file of files) {
-            const imagePath = `${folderPath}/${file}`;
-
-            if (fs.lstatSync(imagePath).isFile()) {
-                const imageTensor = await loadImage(imagePath);
-
-                trainData.push(imageTensor.arraySync() as number);
-                trainLabels.push(encodeLabel(label));
-            }
-        }
-    }
-
-    const inputSize = 28 * 28;
-    const numClasses = 10;
-    const model = createModel(inputSize, numClasses);
-
-
-    const epochs = 50;
-
-    console.log('Rozpoczynam trenowanie modelu...');
-
-    await trainModel(model, trainData, trainLabels, epochs, 16);
-
-    console.log('Trenowanie zakończone!');
-
-    await saveModel(model, epochs);
+    await saveModel(model, 10);
+    console.log('Model zapisany');
 }
 
 

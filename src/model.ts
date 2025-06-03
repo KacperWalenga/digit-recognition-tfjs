@@ -5,42 +5,58 @@ export type MetaData = {
     epochs: number
     timestamp: string
 }
-
-export function createModel(inputSize: number, numClasses: number) {
+export function createModel(): tf.LayersModel {
     const model = tf.sequential();
 
-    model.add(
-        tf.layers.dense({
-            units: 1024,
-            activation: 'relu',
-            inputShape: [inputSize],
-        })
-    );
+    model.add(tf.layers.conv2d({
+        inputShape: [28, 28, 1],
+        filters: 32,
+        kernelSize: 3,
+        padding: 'same',
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+    }));
 
-    model.add(
-        tf.layers.dense({
-            units: 64,
-            activation: 'relu',
-        })
-    );
+    model.add(tf.layers.conv2d({
+        filters: 64,
+        kernelSize: 3,
+        padding: 'same',
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+    }));
 
-    model.add(
-        tf.layers.dense({
-            units: numClasses,
-            activation: 'softmax',
-        })
-    );
+    model.add(tf.layers.maxPooling2d({ poolSize: [2, 2] }));
+    //model.add(tf.layers.batchNormalization());
+    model.add(tf.layers.dropout({ rate: 0.5 }));
+
+    model.add(tf.layers.flatten());
+
+    model.add(tf.layers.dense({
+        units: 256,
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+    }));
+
+    model.add(tf.layers.dense({
+        units: 10,
+        activation: 'softmax',
+        kernelInitializer: 'glorotNormal',
+        kernelRegularizer: tf.regularizers.l2({ l2: 0.001 })
+    }));
+
+    const learningRate = 0.001;
+    const decay = learningRate / 100;
 
     model.compile({
-        optimizer: 'adam',
+        optimizer: tf.train.adamax(learningRate, 0.9, 0.999, 1e-7, decay),
         loss: 'categoricalCrossentropy',
-        metrics: ['accuracy'],
+        metrics: ['accuracy']
     });
 
     return model;
 }
 
-export async function saveModel(model: tf.Sequential, epochs: number) {
+export async function saveModel(model: tf.LayersModel, epochs: number) {
     const savePath = 'file://./models/model';
 
     await model.save(savePath);

@@ -52,25 +52,44 @@ exports.getCustomData = getCustomData;
 exports.getLayerDetails = getLayerDetails;
 const tf = __importStar(require("@tensorflow/tfjs-node"));
 const fs_1 = __importDefault(require("fs"));
-function createModel(inputSize, numClasses) {
+function createModel() {
     const model = tf.sequential();
-    model.add(tf.layers.dense({
-        units: 1024,
+    model.add(tf.layers.conv2d({
+        inputShape: [28, 28, 1],
+        filters: 32,
+        kernelSize: 3,
+        padding: 'same',
         activation: 'relu',
-        inputShape: [inputSize],
+        kernelInitializer: 'glorotNormal'
+    }));
+    model.add(tf.layers.conv2d({
+        filters: 64,
+        kernelSize: 3,
+        padding: 'same',
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
+    }));
+    model.add(tf.layers.maxPooling2d({ poolSize: [2, 2] }));
+    //model.add(tf.layers.batchNormalization());
+    model.add(tf.layers.dropout({ rate: 0.5 }));
+    model.add(tf.layers.flatten());
+    model.add(tf.layers.dense({
+        units: 256,
+        activation: 'relu',
+        kernelInitializer: 'glorotNormal'
     }));
     model.add(tf.layers.dense({
-        units: 64,
-        activation: 'relu',
-    }));
-    model.add(tf.layers.dense({
-        units: numClasses,
+        units: 10,
         activation: 'softmax',
+        kernelInitializer: 'glorotNormal',
+        kernelRegularizer: tf.regularizers.l2({ l2: 0.001 })
     }));
+    const learningRate = 0.001;
+    const decay = learningRate / 100;
     model.compile({
-        optimizer: 'adam',
+        optimizer: tf.train.adamax(learningRate, 0.9, 0.999, 1e-7, decay),
         loss: 'categoricalCrossentropy',
-        metrics: ['accuracy'],
+        metrics: ['accuracy']
     });
     return model;
 }

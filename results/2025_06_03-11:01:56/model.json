@@ -1,0 +1,56 @@
+[
+  {
+    "index": 0,
+    "name": "dense_Dense1",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 784
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      1024
+    ],
+    "paramCount": 803840
+  },
+  {
+    "index": 1,
+    "name": "dense_Dense2",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 1024
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      64
+    ],
+    "paramCount": 65600
+  },
+  {
+    "index": 2,
+    "name": "dense_Dense3",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 64
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      10
+    ],
+    "paramCount": 650
+  }
+]

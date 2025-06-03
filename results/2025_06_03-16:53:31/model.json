@@ -1,0 +1,111 @@
+[
+  {
+    "index": 0,
+    "name": "conv2d_Conv2D1",
+    "className": "Conv2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 1
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      28,
+      28,
+      32
+    ],
+    "paramCount": 320
+  },
+  {
+    "index": 1,
+    "name": "conv2d_Conv2D2",
+    "className": "Conv2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {
+          "3": 32
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      28,
+      28,
+      64
+    ],
+    "paramCount": 18496
+  },
+  {
+    "index": 2,
+    "name": "max_pooling2d_MaxPooling2D1",
+    "className": "MaxPooling2D",
+    "inputSpec": [
+      {
+        "ndim": 4,
+        "axes": {}
+      }
+    ],
+    "outputShape": [
+      null,
+      14,
+      14,
+      64
+    ],
+    "paramCount": 0
+  },
+  {
+    "index": 3,
+    "name": "flatten_Flatten1",
+    "className": "Flatten",
+    "inputSpec": [
+      {
+        "minNDim": 3
+      }
+    ],
+    "outputShape": [
+      null,
+      12544
+    ],
+    "paramCount": 0
+  },
+  {
+    "index": 4,
+    "name": "dense_Dense1",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 12544
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      128
+    ],
+    "paramCount": 1605760
+  },
+  {
+    "index": 5,
+    "name": "dense_Dense2",
+    "className": "Dense",
+    "inputSpec": [
+      {
+        "minNDim": 2,
+        "axes": {
+          "-1": 128
+        }
+      }
+    ],
+    "outputShape": [
+      null,
+      10
+    ],
+    "paramCount": 1290
+  }
+]

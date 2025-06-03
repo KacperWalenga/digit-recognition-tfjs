@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "compile": "rm -rf ./out; tsc",
+    "start": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/test.js; venv/bin/python charts.py",
+    "train": "node out/train.js",
     "test": "node out/test.js",
     "testMnist": "node out/testMnist.js",
-    "train": "node out/train.js",
-    "trainMnist": "node out/trainMnist.js",
-    "start": "node out/train.js; node out/test.js; venv/bin/python charts.py",
-    "startMnist": "node out/trainMnist.js; node out/testMnist.js; venv/bin/python charts.py",
+    "startMnist": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/testMnist.js; venv/bin/python charts.py",
     "charts": "venv/bin/python charts.py"
   },
   "author": "",
@@ -18,6 +17,7 @@
   "dependencies": {
     "@tensorflow/tfjs-data": "^4.22.0",
     "@tensorflow/tfjs-node": "^4.22.0",
+    "canvas": "^3.1.0",
     "express": "^5.1.0",
     "mnist": "^1.1.0",
     "sharp": "^0.34.2",
