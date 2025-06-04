@@ -21,7 +21,7 @@ This project implements a convolutional neural network (CNN) using TensorFlow.js
 
 ### Prerequisites
 
-- Node.js v18+
+- Node.js v22+
 - Python 3.7+ (for training visualization)
 - TensorFlow.js
 
