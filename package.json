@@ -19,14 +19,14 @@
 
     "api": "npm run rebuild && node out/api.js",
 
-    "stats": "node -e \"const fs = require('fs'); const files = fs.readdirSync('./results'); console.log('Liczba testów:', files.length);\"",
-
     "train": "npm run rebuild && node out/train.js && npm run trainingCharts",
     "test": "npm run rebuild && node out/test.js; npm run charts",
     "test:mnist": "npm run rebuild && node out/testMnist.js; npm run charts",
   
-    "charts": "venv/bin/python charts.py",
-    "trainingCharts": "venv/bin/python training_charts.py"
+
+    "stats": "venv/bin/python python/overall_accuracy_comparison.py",
+    "charts": "venv/bin/python python/charts.py",
+    "trainingCharts": "venv/bin/python python/training_charts.py"
   },
   "author": "",
   "license": "ISC",
