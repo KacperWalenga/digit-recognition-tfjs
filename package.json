@@ -1,15 +1,30 @@
 {
-  "name": "kacper",
+  "name": "mnist-digit-recognition",
   "version": "1.0.0",
-  "description": "",
+  "description": "MNIST digit recognition with TensorFlow.js",
   "main": "index.js",
   "scripts": {
-    "compile": "rm -rf ./out; tsc",
-    "start": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/test.js; venv/bin/python charts.py",
-    "train": "node out/train.js; npm run trainingCharts",
-    "test": "node out/test.js; npm run charts",
-    "testMnist": "node out/testMnist.js; npm run charts",
-    "startMnist": "npm run compile; node out/train.js; venv/bin/python training_charts.py; node out/testMnist.js; venv/bin/python charts.py",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "rebuild": "npm run clean && npm run build",
+
+    "clean": "rm -rf out",
+    "clean:results": "rm -rf results/*",
+    "clean:uploads": "rm -rf uploads/*",
+    "clean:models": "rm -rf models/model/*",
+    "clean:all": "npm run clean && npm run clean:results && npm run clean:uploads && npm run clean:models",
+    
+    "backup:model": "cp -r models/model models/model_backup_$(date +%Y%m%d_%H%M%S)",
+    "backup:results": "tar -czf results_backup_$(date +%Y%m%d_%H%M%S).tar.gz results/",
+
+    "api": "npm run rebuild && node out/api.js",
+
+    "stats": "node -e \"const fs = require('fs'); const files = fs.readdirSync('./results'); console.log('Liczba testów:', files.length);\"",
+
+    "train": "npm run rebuild && node out/train.js && npm run trainingCharts",
+    "test": "npm run rebuild && node out/test.js; npm run charts",
+    "test:mnist": "npm run rebuild && node out/testMnist.js; npm run charts",
+  
     "charts": "venv/bin/python charts.py",
     "trainingCharts": "venv/bin/python training_charts.py"
   },
