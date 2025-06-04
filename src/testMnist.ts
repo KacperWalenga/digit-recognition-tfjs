@@ -3,7 +3,7 @@ import fs from 'fs';
 import { loadModel, getLayerDetails, getCustomData } from './model.js';
 import mnist from 'mnist';
 
-const set = (mnist as any).set(6000, 1000);
+const set = (mnist as any).set(60000, 10000);
 const TEST_SET = set.test;
 
 async function main() {

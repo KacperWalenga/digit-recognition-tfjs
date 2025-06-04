@@ -17,11 +17,11 @@
     "backup:model": "cp -r models/model models/model_backup_$(date +%Y%m%d_%H%M%S)",
     "backup:results": "tar -czf results_backup_$(date +%Y%m%d_%H%M%S).tar.gz results/",
 
-    "api": "npm run rebuild && node out/api.js",
+    "api": "npm run rebuild && node out/src/api.js",
 
-    "train": "npm run rebuild && node out/train.js && npm run trainingCharts",
-    "test": "npm run rebuild && node out/test.js; npm run charts",
-    "test:mnist": "npm run rebuild && node out/testMnist.js; npm run charts",
+    "train": "npm run rebuild && node out/src/train.js && npm run trainingCharts",
+    "test": "npm run rebuild && node out/src/test.js && npm run charts && npm run stats",
+    "test:mnist": "npm run rebuild && node out/src/testMnist.js && npm run charts && npm run stats",
   
 
     "stats": "venv/bin/python python/overall_accuracy_comparison.py",
