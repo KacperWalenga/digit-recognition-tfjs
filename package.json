@@ -20,7 +20,9 @@
     "@tensorflow/tfjs-node": "^4.22.0",
     "canvas": "^3.1.0",
     "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
     "mnist": "^1.1.0",
+    "multer": "^2.0.1",
     "sharp": "^0.34.2",
     "typescript": "^5.8.3"
   },

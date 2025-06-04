@@ -1,0 +1,265 @@
+body { 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  line-height: 1.6;
+  color: #333;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.tab-container {
+  display: flex;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  border-bottom: 2px solid #4a90e2;
+  color: #4a90e2;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.upload-container {
+  border: 2px dashed #ccc;
+  padding: 30px;
+  text-align: center;
+  border-radius: 5px;
+  margin: 20px 0;
+  transition: all 0.3s;
+}
+
+.upload-container:hover {
+  border-color: #4a90e2;
+}
+
+.upload-container.dragover {
+  background-color: #f0f8ff;
+  border-color: #4a90e2;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  background-color: #4a90e2;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px 0;
+  transition: background-color 0.2s;
+}
+
+.upload-btn:hover {
+  background-color: #3a80d2;
+}
+
+.preview {
+  max-width: 300px;
+  max-height: 300px;
+  margin: 20px auto;
+  display: none;
+}
+
+.note {
+  color: #666;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.api-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.api-link:hover {
+  text-decoration: underline;
+}
+
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#drawingCanvas {
+  border: 1px solid #ccc;
+  background-color: black;
+  border-radius: 5px;
+  cursor: crosshair;
+  display: block;
+  margin: 0 auto;
+}
+
+.canvas-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 8px 15px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.drawing-instructions {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-left: 3px solid #4a90e2;
+}
+
+.result-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-container {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+}
+
+.result {
+  font-size: 120px;
+  font-weight: bold;
+  color: #4a90e2;
+  text-align: center;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.confidence {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 0;
+  color: #555;
+}
+
+.bar-chart {
+  margin-top: 30px;
+}
+
+.bar-container {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.bar-label {
+  width: 30px;
+  font-weight: bold;
+}
+
+.bar {
+  flex-grow: 1;
+  height: 24px;
+  background: linear-gradient(to right, #6ab7ff, #4a90e2);
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+.bar-value {
+  margin-left: 10px;
+  font-weight: bold;
+  width: 60px;
+}
+
+img.processed {
+  max-width: 250px;
+  max-height: 250px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+pre {
+  background-color: #f4f4f4;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+code {
+  background-color: #f4f4f4;
+  padding: 2px 5px;
+  border-radius: 3px;
+}

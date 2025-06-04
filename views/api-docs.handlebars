@@ -1,0 +1,41 @@
+<h1>Dokumentacja API Rozpoznawania Cyfr</h1>
+
+<h2>Endpoint: POST /recognize</h2>
+<p>Endpoint przyjmuje obraz i zwraca rozpoznaną cyfrę.</p>
+
+<h3>Parametry żądania</h3>
+<p><strong>Content-Type:</strong> multipart/form-data</p>
+<p><strong>Parametry:</strong></p>
+<ul>
+    <li><code>image</code> - plik obrazu (wymagany)</li>
+</ul>
+
+<h3>Odpowiedź</h3>
+<p>Po ustawieniu nagłówka <code>Accept: application/json</code> otrzymasz odpowiedź JSON:</p>
+<pre>
+{
+  "predictedDigit": 5,
+  "probability": 0.9823,
+  "confidencePercentage": "98.23%",
+  "allProbabilities": [
+    {
+      "digit": 5,
+      "probability": 0.9823,
+      "percentage": "98.23"
+    },
+    {
+      "digit": 3,
+      "probability": 0.0156,
+      "percentage": "1.56"
+    }
+  ]
+}
+</pre>
+
+<h3>Przykładowe użycie z curl</h3>
+<pre>curl -F "image=@/ścieżka/do/obrazu.png" -H "Accept: application/json" http://localhost:{{port}}/recognize</pre>
+
+<h3>Odpowiedź HTML</h3>
+<p>Domyślnie (bez nagłówka Accept) endpoint zwraca przyjazny dla użytkownika interfejs HTML z wizualizacją wyniku.</p>
+
+<a href="/" class="btn">Powrót do strony głównej</a>

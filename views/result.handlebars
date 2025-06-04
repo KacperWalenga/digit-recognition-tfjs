@@ -1,0 +1,30 @@
+<h1>Wynik rozpoznawania cyfry</h1>
+
+<div class="container">
+    <div class="image-container">
+        <h2>Przesłany obraz</h2>
+        <img src="/uploads/{{imageFilename}}" class="processed" alt="Przesłany obraz">
+    </div>
+    
+    <div class="result-container">
+        <h2>Rozpoznana cyfra</h2>
+        <p class="result">{{predictedDigit}}</p>
+        <p class="confidence">Pewność: {{confidence}}%</p>
+        
+        <div class="bar-chart">
+            <h3>Prawdopodobieństwo dla każdej cyfry</h3>
+            {{#each allProbabilities}}
+            <div class="bar-container">
+                <span class="bar-label">{{this.digit}}</span>
+                <div class="bar" style="width: {{this.percentage}}%"></div>
+                <span class="bar-value">{{this.percentage}}%</span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<div class="buttons">
+    <a href="/" class="btn">Rozpoznaj inny obraz</a>
+    <a href="/recognize-api" class="btn btn-secondary">Dokumentacja API</a>
+</div>

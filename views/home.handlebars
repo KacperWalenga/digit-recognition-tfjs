@@ -1,0 +1,47 @@
+<h1>Rozpoznawanie Cyfr MNIST</h1>
+<p>Narysuj cyfrę lub prześlij obraz, aby zobaczyć jak model ją rozpozna.</p>
+
+<div class="container">
+    <div class="tab-container">
+        <div class="tab active" id="drawTab">Narysuj cyfrę</div>
+        <div class="tab" id="uploadTab">Prześlij obraz</div>
+    </div>
+    
+    <div class="tab-content active" id="drawContent">
+        <div class="canvas-container">
+            <canvas id="drawingCanvas" width="280" height="280"></canvas>
+            
+            <div class="canvas-controls">
+                <button class="btn" id="recognizeBtn">Rozpoznaj</button>
+                <button class="btn btn-danger" id="clearBtn">Wyczyść</button>
+                <button class="btn btn-secondary" id="guidelineBtn">Pokaż siatkę</button>
+            </div>
+            
+            <div class="drawing-instructions">
+                <p><strong>Wskazówki:</strong> Narysuj cyfrę podobną do tych z bazy MNIST - czarna cyfra na białym tle, 
+                zajmująca znaczną część obszaru, wycentrowana. Następnie kliknij "Rozpoznaj".</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="uploadContent">
+        <form action="/recognize" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-container" id="dropZone">
+                <p>Przeciągnij obraz tutaj lub kliknij, aby wybrać plik</p>
+                <input type="file" name="image" accept="image/*" required class="file-input" id="fileInput" />
+                <button type="button" class="upload-btn" id="browseBtn">Wybierz plik</button>
+                <img src="" alt="Podgląd obrazu" class="preview" id="imagePreview">
+                <p class="note" id="fileName">Nie wybrano pliku</p>
+            </div>
+            <button type="submit" class="upload-btn" style="width: 100%;">Rozpoznaj cyfrę</button>
+        </form>
+    </div>
+    
+    <p class="note">Najlepsze wyniki uzyskasz rysując/przesyłając cyfry podobne do tych z bazy MNIST.</p>
+    
+    <a href="/recognize-api" class="api-link">Dokumentacja API</a>
+</div>
+
+<footer>
+    &copy; 2025 Rozpoznawanie Cyfr MNIST | Model trenowany na zbiorze danych MNIST
+</footer>
